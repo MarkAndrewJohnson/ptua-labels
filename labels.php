@@ -109,7 +109,7 @@ if(isset($_FILES['current']) || isset($_FILES['expired'])) {
 					$member->label_state = $member->primary_state;
 					$member->label_city = $member->primary_city;
 				}
-				$member->label_expires = 'Membership Overdue';
+				$member->label_expires = 'Membership due';
 				$member->label_region = isset($pcs[$member->label_zip]) ? $pcs[$member->label_zip] : '';
 				$member->label_member_name = $member->full_name;
 			}
