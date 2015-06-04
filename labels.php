@@ -2,9 +2,6 @@
 ini_set('memory_limit', '64M');
 if(isset($_FILES['current']) || isset($_FILES['expired'])) {
 	$members = (object) array('current' => array(), 'expired' => array());
-	include_once('postcode_sort.inc.php');
-	$pcs = array();
-	foreach($_pcsort as $_region => $_pcset) foreach ($_pcset as $_pc) $pcs["{$_pc}"] = $_region;
 	
 	/* get current members */
 	if(isset($_FILES['current'])) {
@@ -55,7 +52,6 @@ if(isset($_FILES['current']) || isset($_FILES['expired'])) {
 					$member->label_city = $member->primary_city;
 				}
 				$member->label_expires = '';
-				$member->label_region = isset($pcs[$member->label_zip]) ? $pcs[$member->label_zip] : '';
 				$member->label_member_name = $member->full_name;
 			}
 		}
@@ -110,7 +106,6 @@ if(isset($_FILES['current']) || isset($_FILES['expired'])) {
 					$member->label_city = $member->primary_city;
 				}
 				$member->label_expires = 'Membership due';
-				$member->label_region = isset($pcs[$member->label_zip]) ? $pcs[$member->label_zip] : '';
 				$member->label_member_name = $member->full_name;
 			}
 		}
@@ -177,11 +172,7 @@ if(isset($_FILES['current']) || isset($_FILES['expired'])) {
 		$base_y = ($i * CELL_HEIGHT) + TOP_OFFSET;
 		$base_x = ($j * CELL_WIDTH) + 11 + (($j - 1) * CELL_SPACING) + LEFT_OFFSET;
 		$pdf->SetFont('Arial','B',9);
-		if(isset($member->label_region) && strlen($member->label_region) > 0) {
-			$pdf->Text($base_x, $base_y, $member->label_region . ', ' . $member->label_expires);
-		} else {
-			$pdf->Text($base_x, $base_y, $member->label_expires);
-		}
+		$pdf->Text($base_x, $base_y, $member->label_expires);
 		$pdf->setXY($base_x, $base_y + 1);
 		$pdf->MultiCell(60, 4, $member->label_member_name, 0, 'L', 0);
 		$pdf->SetFont('Arial','',9);
@@ -227,9 +218,6 @@ if(isset($_FILES['current']) || isset($_FILES['expired'])) {
 		   	$_exp = '';
 		} else {
 			$_exp = $member->label_expires;
-		}
-		if(isset($member->label_region) && strlen($member->label_region) > 0) {
-			$pdf->Text($base_x, $base_y, $member->label_region);
 		}
 		$pdf->setXY($base_x, $base_y + 1);
 		$pdf->MultiCell(65, 4, $member->label_member_name, 0, 'L', 0);
