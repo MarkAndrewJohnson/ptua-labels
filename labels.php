@@ -51,6 +51,8 @@ if(isset($_FILES['current']) || isset($_FILES['expired'])) {
 					$member->label_state = $member->primary_state;
 					$member->label_city = $member->primary_city;
 				}
+
+				$member->label_city = strtoupper($member->label_city);
 				$member->label_expires = '';
 				$member->label_member_name = $member->full_name;
 			}
@@ -105,6 +107,8 @@ if(isset($_FILES['current']) || isset($_FILES['expired'])) {
 					$member->label_state = $member->primary_state;
 					$member->label_city = $member->primary_city;
 				}
+
+				$member->label_city = strtoupper($member->label_city);
 				$member->label_expires = 'Membership due';
 				$member->label_member_name = $member->full_name;
 			}
